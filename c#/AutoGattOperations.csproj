@@ -54,17 +54,14 @@
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="wclBluetoothFramework, Version=7.10.8.0, Culture=neutral, PublicKeyToken=31ded9088a20b7e8, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\BluetoothFramework\wclBluetoothFramework.dll</HintPath>
+    <Reference Include="wclBluetoothFramework">
+      <HintPath>..\..\..\..\WCL7\NET\Lib\netframework\wclBluetoothFramework.dll</HintPath>
     </Reference>
-    <Reference Include="wclCommon, Version=7.6.0.0, Culture=neutral, PublicKeyToken=82c86b86abd59210, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\BluetoothFramework\wclCommon.dll</HintPath>
+    <Reference Include="wclCommon">
+      <HintPath>..\..\..\..\WCL7\NET\Lib\netframework\wclCommon.dll</HintPath>
     </Reference>
-    <Reference Include="wclCommunication, Version=7.5.5.0, Culture=neutral, PublicKeyToken=959749996648afb6, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\BluetoothFramework\wclCommunication.dll</HintPath>
+    <Reference Include="wclCommunication">
+      <HintPath>..\..\..\..\WCL7\NET\Lib\netframework\wclCommunication.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
