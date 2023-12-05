@@ -73,7 +73,7 @@ namespace AutoGattOperations
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "fmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "AutoGattOperations";
+            this.Text = "Auto Gatt Operations";
             this.Load += new System.EventHandler(this.fmMain_Load);
             this.ResumeLayout(false);
 
