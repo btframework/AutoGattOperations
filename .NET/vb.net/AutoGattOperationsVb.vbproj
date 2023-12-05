@@ -42,13 +42,13 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="wclBluetoothFramework">
-      <HintPath>..\..\Lib\wclBluetoothFramework.dll</HintPath>
+      <HintPath>..\Lib\wclBluetoothFramework.dll</HintPath>
     </Reference>
     <Reference Include="wclCommon">
-      <HintPath>..\..\Lib\wclCommon.dll</HintPath>
+      <HintPath>..\Lib\wclCommon.dll</HintPath>
     </Reference>
     <Reference Include="wclCommunication">
-      <HintPath>..\..\Lib\wclCommunication.dll</HintPath>
+      <HintPath>..\Lib\wclCommunication.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

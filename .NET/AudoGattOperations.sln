@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoGattOperationsCSharp", "c#\AutoGattOperationsCSharp.csproj", "{7AD920BD-4311-45CC-8F2F-9B50DEE83BE6}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "AutoGattOperationsVb", "vb.net\AutoGattOperationsVb\AutoGattOperationsVb.vbproj", "{D1B83DEC-C2D8-45E2-ABF0-30F2B0D2908B}"
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "AutoGattOperationsVb", "vb.net\AutoGattOperationsVb.vbproj", "{D1B83DEC-C2D8-45E2-ABF0-30F2B0D2908B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
