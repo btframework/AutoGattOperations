@@ -32,29 +32,48 @@ namespace AutoGattOperations
             FManager.Close();
         }
 
+        private void Disconnect()
+        {
+            if (btDisconnect.Enabled)
+            {
+                Trace("Unsubscribe from all characteristics");
+
+                foreach (wclGattCharacteristic Char in FSubscribed)
+                {
+                    FClient.WriteClientConfiguration(Char, false, wclGattOperationFlag.goNone, wclGattProtectionLevel.plNone);
+                    FClient.Unsubscribe(Char);
+                }
+                FSubscribed.Clear();
+                FSubscribed = null;
+
+                Trace("Disconnecting");
+                FClient.Disconnect();
+            }
+        }
+
         public fmMain()
         {
             InitializeComponent();
         }
 
-        private void fmMain_Load(object sender, EventArgs e)
+        private void fmMainLoad(object sender, EventArgs e)
         {
             FDevices = null;
 
             FManager = new wclBluetoothManager();
-            FManager.AfterOpen += new EventHandler(FManager_AfterOpen);
-            FManager.BeforeClose += new EventHandler(FManager_BeforeClose);
-            FManager.OnDiscoveringStarted += new wclBluetoothEvent(FManager_OnDiscoveringStarted);
-            FManager.OnDeviceFound += new wclBluetoothDeviceEvent(FManager_OnDeviceFound);
-            FManager.OnDiscoveringCompleted += new wclBluetoothResultEvent(FManager_OnDiscoveringCompleted);
+            FManager.AfterOpen += new EventHandler(ManagerAfterOpen);
+            FManager.BeforeClose += new EventHandler(ManagerBeforeClose);
+            FManager.OnDiscoveringStarted += new wclBluetoothEvent(ManagerDiscoveringStarted);
+            FManager.OnDeviceFound += new wclBluetoothDeviceEvent(ManagerDeviceFound);
+            FManager.OnDiscoveringCompleted += new wclBluetoothResultEvent(ManagerDiscoveringCompleted);
 
             FClient = new wclGattClient();
-            FClient.OnDisconnect += new wclCommunication.wclClientConnectionDisconnectEvent(FClient_OnDisconnect);
-            FClient.OnConnect += new wclCommunication.wclClientConnectionConnectEvent(FClient_OnConnect);
-            FClient.OnCharacteristicChanged += new wclGattCharacteristicChangedEvent(FClient_OnCharacteristicChanged);
+            FClient.OnDisconnect += new wclCommunication.wclClientConnectionDisconnectEvent(ClientDisconnect);
+            FClient.OnConnect += new wclCommunication.wclClientConnectionConnectEvent(ClientConnect);
+            FClient.OnCharacteristicChanged += new wclGattCharacteristicChangedEvent(ClientCharacteristicChanged);
         }
 
-        void FClient_OnCharacteristicChanged(object Sender, ushort Handle, byte[] Value)
+        void ClientCharacteristicChanged(Object Sender, UInt16 Handle, Byte[] Value)
         {
             Trace("Notification received: ");
             String s = "";
@@ -63,7 +82,7 @@ namespace AutoGattOperations
             Trace("  " + s);
         }
 
-        void FClient_OnConnect(object Sender, int Error)
+        void ClientConnect(Object Sender, Int32 Error)
         {
             if (Error != wclErrors.WCL_E_SUCCESS)
             {
@@ -129,7 +148,7 @@ namespace AutoGattOperations
             }
         }
 
-        void FClient_OnDisconnect(object Sender, int Reason)
+        void ClientDisconnect(Object Sender, Int32 Reason)
         {
             btDisconnect.Enabled = false;
 
@@ -137,7 +156,7 @@ namespace AutoGattOperations
             CloseBluetoothManager();
         }
 
-        void FManager_OnDiscoveringCompleted(object Sender, wclBluetoothRadio Radio, int Error)
+        void ManagerDiscoveringCompleted(Object Sender, wclBluetoothRadio Radio, Int32 Error)
         {
             if (Error != wclErrors.WCL_E_SUCCESS)
             {
@@ -168,25 +187,25 @@ namespace AutoGattOperations
             FDevices = null;
         }
 
-        void FManager_OnDeviceFound(object Sender, wclBluetoothRadio Radio, long Address)
+        void ManagerDeviceFound(Object Sender, wclBluetoothRadio Radio, Int64 Address)
         {
             Trace("Device found: " + Address.ToString("X12"));
             FDevices.Add(Address);
         }
 
-        void FManager_OnDiscoveringStarted(object Sender, wclBluetoothRadio Radio)
+        void ManagerDiscoveringStarted(Object Sender, wclBluetoothRadio Radio)
         {
             Trace("Discovering has been started");
             FDevices = new List<Int64>();
         }
 
-        void FManager_BeforeClose(object sender, EventArgs e)
+        void ManagerBeforeClose(Object sender, EventArgs e)
         {
             Trace("Bluetooth Manager closing");
             btStart.Enabled = true;
         }
 
-        void FManager_AfterOpen(object sender, EventArgs e)
+        void ManagerAfterOpen(Object sender, EventArgs e)
         {
             btStart.Enabled = false;
 
@@ -228,29 +247,23 @@ namespace AutoGattOperations
             }
         }
 
-        private void btStart_Click(object sender, EventArgs e)
+        private void btStartClick(Object sender, EventArgs e)
         {
             lbLog.Items.Clear();
-            lbLog.Items.Add("Open Bluetooth Manager");
+            Trace("Open Bluetooth Manager");
             Int32 Res = FManager.Open();
             if (Res != wclErrors.WCL_E_SUCCESS)
-                lbLog.Items.Add("Bluetooth Manager open failed: 0x" + Res.ToString("X8"));
+                Trace("Bluetooth Manager open failed: 0x" + Res.ToString("X8"));
         }
 
-        private void btDisconnect_Click(object sender, EventArgs e)
+        private void btDisconnectClick(Object sender, EventArgs e)
         {
-            Trace("Unsubscribe from all characteristics");
+            Disconnect();
+        }
 
-            foreach (wclGattCharacteristic Char in FSubscribed)
-            {
-                FClient.WriteClientConfiguration(Char, false, wclGattOperationFlag.goNone, wclGattProtectionLevel.plNone);
-                FClient.Unsubscribe(Char);
-            }
-            FSubscribed.Clear();
-            FSubscribed = null;
-
-            Trace("Disconnecting");
-            FClient.Disconnect();
+        private void fmMainClosed(Object sender, FormClosedEventArgs e)
+        {
+            Disconnect();
         }
     }
 }

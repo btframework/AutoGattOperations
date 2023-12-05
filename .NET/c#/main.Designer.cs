@@ -41,7 +41,7 @@ namespace AutoGattOperations
             this.btStart.TabIndex = 0;
             this.btStart.Text = "Start";
             this.btStart.UseVisualStyleBackColor = true;
-            this.btStart.Click += new System.EventHandler(this.btStart_Click);
+            this.btStart.Click += new System.EventHandler(this.btStartClick);
             // 
             // btDisconnect
             // 
@@ -52,7 +52,7 @@ namespace AutoGattOperations
             this.btDisconnect.TabIndex = 1;
             this.btDisconnect.Text = "Disconnect";
             this.btDisconnect.UseVisualStyleBackColor = true;
-            this.btDisconnect.Click += new System.EventHandler(this.btDisconnect_Click);
+            this.btDisconnect.Click += new System.EventHandler(this.btDisconnectClick);
             // 
             // lbLog
             // 
@@ -74,7 +74,8 @@ namespace AutoGattOperations
             this.Name = "fmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Auto Gatt Operations";
-            this.Load += new System.EventHandler(this.fmMain_Load);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.fmMainClosed);
+            this.Load += new System.EventHandler(this.fmMainLoad);
             this.ResumeLayout(false);
 
         }

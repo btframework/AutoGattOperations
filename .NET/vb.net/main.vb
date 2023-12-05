@@ -18,14 +18,30 @@
         FManager.Close()
     End Sub
 
-    Private Sub fmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Private Sub Disconnect()
+        If btDisconnect.Enabled Then
+            Trace("Unsubscribe from all characteristics")
+
+            For Each [Char] As wclGattCharacteristic In FSubscribed
+                FClient.WriteClientConfiguration([Char], False, wclGattOperationFlag.goNone, wclGattProtectionLevel.plNone)
+                FClient.Unsubscribe([Char])
+            Next
+            FSubscribed.Clear()
+            FSubscribed = Nothing
+
+            Trace("Disconnecting")
+            FClient.Disconnect()
+        End If
+    End Sub
+
+    Private Sub fmMainLoad(sender As Object, e As EventArgs) Handles MyBase.Load
         FDevices = Nothing
 
         FManager = New wclBluetoothManager()
         FClient = New wclGattClient()
     End Sub
 
-    Private Sub FClient_OnCharacteristicChanged(Sender As Object, Handle As UShort, Value() As Byte) Handles FClient.OnCharacteristicChanged
+    Private Sub ClientCharacteristicChanged(Sender As Object, Handle As UShort, Value() As Byte) Handles FClient.OnCharacteristicChanged
         Trace("Notification received: ")
         Dim s As String = ""
         For Each b As Byte In Value
@@ -34,7 +50,7 @@
         Next
     End Sub
 
-    Private Sub FClient_OnConnect(Sender As Object, [Error] As Integer) Handles FClient.OnConnect
+    Private Sub ClientConnect(Sender As Object, [Error] As Integer) Handles FClient.OnConnect
         If [Error] <> wclErrors.WCL_E_SUCCESS Then
             Trace("Connection failed: 0x" + [Error].ToString("X8"))
             CloseBluetoothManager()
@@ -85,14 +101,14 @@
         End If
     End Sub
 
-    Private Sub FClient_OnDisconnect(Sender As Object, Reason As Integer) Handles FClient.OnDisconnect
+    Private Sub ClientDisconnect(Sender As Object, Reason As Integer) Handles FClient.OnDisconnect
         btDisconnect.Enabled = False
 
         Trace("Client disconnected by reason: 0x" + Reason.ToString("X8"))
         CloseBluetoothManager()
     End Sub
 
-    Private Sub FManager_OnDiscoveringCompleted(Sender As Object, Radio As wclBluetoothRadio, [Error] As Integer) Handles FManager.OnDiscoveringCompleted
+    Private Sub ManagerDiscoveringCompleted(Sender As Object, Radio As wclBluetoothRadio, [Error] As Integer) Handles FManager.OnDiscoveringCompleted
         If [Error] <> wclErrors.WCL_E_SUCCESS Then
             Trace("Discovering completed with error: 0x" + [Error].ToString("X8"))
             CloseBluetoothManager()
@@ -115,22 +131,22 @@
         FDevices = Nothing
     End Sub
 
-    Private Sub FManager_OnDeviceFound(Sender As Object, Radio As wclBluetoothRadio, Address As Long) Handles FManager.OnDeviceFound
+    Private Sub ManagerDeviceFound(Sender As Object, Radio As wclBluetoothRadio, Address As Long) Handles FManager.OnDeviceFound
         Trace("Device found: " + Address.ToString("X12"))
         FDevices.Add(Address)
     End Sub
 
-    Private Sub FManager_OnDiscoveringStarted(Sender As Object, Radio As wclBluetoothRadio) Handles FManager.OnDiscoveringStarted
+    Private Sub ManagerDiscoveringStarted(Sender As Object, Radio As wclBluetoothRadio) Handles FManager.OnDiscoveringStarted
         Trace("Discovering has been started")
         FDevices = New List(Of Int64)()
     End Sub
 
-    Private Sub FManager_BeforeClose(sender As Object, e As EventArgs) Handles FManager.BeforeClose
+    Private Sub ManagerBeforeClose(sender As Object, e As EventArgs) Handles FManager.BeforeClose
         Trace("Bluetooth Manager closing")
         btStart.Enabled = True
     End Sub
 
-    Private Sub FManager_AfterOpen(sender As Object, e As EventArgs) Handles FManager.AfterOpen
+    Private Sub ManagerAfterOpen(sender As Object, e As EventArgs) Handles FManager.AfterOpen
         btStart.Enabled = False
 
         Trace("Bluetooth Manager has been opened")
@@ -162,24 +178,18 @@
         End If
     End Sub
 
-    Private Sub btStart_Click(sender As Object, e As EventArgs) Handles btStart.Click
+    Private Sub btStartClick(sender As Object, e As EventArgs) Handles btStart.Click
         lbLog.Items.Clear()
-        lbLog.Items.Add("Open Bluetooth Manager")
+        Trace("Open Bluetooth Manager")
         Dim Res As Int32 = FManager.Open()
-        If Res <> wclErrors.WCL_E_SUCCESS Then lbLog.Items.Add("Bluetooth Manager open failed: 0x" + Res.ToString("X8"))
+        If Res <> wclErrors.WCL_E_SUCCESS Then Trace("Bluetooth Manager open failed: 0x" + Res.ToString("X8"))
     End Sub
 
-    Private Sub btDisconnect_Click(sender As Object, e As EventArgs) Handles btDisconnect.Click
-        Trace("Unsubscribe from all characteristics")
+    Private Sub btDisconnectClick(sender As Object, e As EventArgs) Handles btDisconnect.Click
+        Disconnect()
+    End Sub
 
-        For Each [Char] As wclGattCharacteristic In FSubscribed
-            FClient.WriteClientConfiguration([Char], False, wclGattOperationFlag.goNone, wclGattProtectionLevel.plNone)
-            FClient.Unsubscribe([Char])
-        Next
-        FSubscribed.Clear()
-        FSubscribed = Nothing
-
-        Trace("Disconnecting")
-        FClient.Disconnect()
+    Private Sub fmMainClosed(sender As Object, e As FormClosedEventArgs) Handles MyBase.FormClosed
+        Disconnect()
     End Sub
 End Class
