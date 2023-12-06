@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{6D2BDC47-66D1-4781-9E68-9A9F85FFCE74}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="Delphi\AutoGattOperationsDelphi.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="CBuilder\AutoGattOperationsCBuilder.cbproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="AutoGattOperationsDelphi">
+        <MSBuild Projects="Delphi\AutoGattOperationsDelphi.dproj"/>
+    </Target>
+    <Target Name="AutoGattOperationsDelphi:Clean">
+        <MSBuild Projects="Delphi\AutoGattOperationsDelphi.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="AutoGattOperationsDelphi:Make">
+        <MSBuild Projects="Delphi\AutoGattOperationsDelphi.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="AutoGattOperationsCBuilder">
+        <MSBuild Projects="CBuilder\AutoGattOperationsCBuilder.cbproj"/>
+    </Target>
+    <Target Name="AutoGattOperationsCBuilder:Clean">
+        <MSBuild Projects="CBuilder\AutoGattOperationsCBuilder.cbproj" Targets="Clean"/>
+    </Target>
+    <Target Name="AutoGattOperationsCBuilder:Make">
+        <MSBuild Projects="CBuilder\AutoGattOperationsCBuilder.cbproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="AutoGattOperationsDelphi;AutoGattOperationsCBuilder"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="AutoGattOperationsDelphi:Clean;AutoGattOperationsCBuilder:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="AutoGattOperationsDelphi:Make;AutoGattOperationsCBuilder:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

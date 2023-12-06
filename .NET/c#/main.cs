@@ -59,6 +59,7 @@ namespace AutoGattOperations
         private void fmMainLoad(object sender, EventArgs e)
         {
             FDevices = null;
+            FSubscribed = null;
 
             FManager = new wclBluetoothManager();
             FManager.AfterOpen += new EventHandler(ManagerAfterOpen);

@@ -36,6 +36,7 @@
 
     Private Sub fmMainLoad(sender As Object, e As EventArgs) Handles MyBase.Load
         FDevices = Nothing
+        FSubscribed = Nothing
 
         FManager = New wclBluetoothManager()
         FClient = New wclGattClient()
