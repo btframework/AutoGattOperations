@@ -1,6 +1,7 @@
 /**/bin
 /**/obj
 /**/build
+/**/__history
 
 *.db
 *.suo
@@ -8,6 +9,5 @@
 *.txt
 *.stat
 *.identcache
-*.user
 
 !/**/build/build_result.txt
