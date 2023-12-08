@@ -7,5 +7,6 @@
 *.local
 *.txt
 *.stat
+*.identcache
 
 !/**/build/build_result.txt
