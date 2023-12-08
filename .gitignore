@@ -1,4 +1,7 @@
 /**/bin
 /**/obj
+/**/build
 
+*.db
 *.suo
+*.local
