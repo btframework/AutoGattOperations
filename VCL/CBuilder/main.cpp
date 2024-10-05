@@ -7,8 +7,6 @@
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "wclBluetooth"
-#pragma link "wclAudio"
-#pragma link "wclBluetooth"
 #pragma resource "*.dfm"
 TfmMain *fmMain;
 //---------------------------------------------------------------------------

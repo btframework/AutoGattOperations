@@ -2,18 +2,16 @@
 
 #ifndef mainH
 #define mainH
-#include "wclBluetooth.hpp"
 #include <System.Classes.hpp>
 #include <Vcl.Controls.hpp>
 #include <Vcl.StdCtrls.hpp>
+#include "wclBluetooth.hpp"
 //---------------------------------------------------------------------------
 #include <list>
 #include <System.Classes.hpp>
 #include <Vcl.Controls.hpp>
 #include <Vcl.StdCtrls.hpp>
 #include <Vcl.Forms.hpp>
-#include "wclBluetooth.hpp"
-#include "wclAudio.hpp"
 //---------------------------------------------------------------------------
 class TfmMain : public TForm
 {
